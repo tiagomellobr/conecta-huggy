@@ -9,5 +9,5 @@ Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 
 Route::middleware(JwtMiddleware::class)->group(function () {
     Route::get('user', [App\Http\Controllers\AuthController::class, 'getAuthenticatedUser']);
-    Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout']);
+    Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
