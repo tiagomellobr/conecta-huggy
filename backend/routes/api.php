@@ -13,9 +13,10 @@ Route::middleware(JwtMiddleware::class)->group(function () {
 
     Route::apiResource('posts', App\Http\Controllers\PostController::class);
     Route::apiResource('posts.comments', App\Http\Controllers\PostCommentController::class);
-
     Route::post('posts/{post}/likes', [App\Http\Controllers\PostLikeController::class, 'store']);
     Route::delete('posts/{post}/likes/{like}', [App\Http\Controllers\PostLikeController::class, 'destroy']);
 
     Route::apiResource('videos', App\Http\Controllers\VideoController::class);
+
+    Route::apiResource('news', App\Http\Controllers\NewsController::class);
 });
