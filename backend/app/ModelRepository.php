@@ -17,33 +17,46 @@ class ModelRepository implements ModelRepositoryInterface
         $this->cacheKey = strtolower(str_replace('\\', '-', $model));
     }
 
-    public function all()
+    public function all($withCount = null)
     {
         $cachedData = Redis::get($this->cacheKey);
 
         if (!empty($cachedData)) {
             return json_decode($cachedData);
         } else {
-            $data = $this->model::all();
-            Redis::set($this->cacheKey,json_encode($data->toArray()));
-            Redis::expire($this->cacheKey, $this->cacheTime);
+            if ($withCount) {
+                $data = $this->model::withCount($withCount)->get();
+            } else {
+                $data = $this->model::all();
+            }
 
+            if (!empty($data->toArray())) {
+                Redis::set($this->cacheKey,json_encode($data->toArray()));
+                Redis::expire($this->cacheKey, $this->cacheTime);
+            }
             return $data;
         }
 
     }
 
-    public function find(int $id)
+    public function find(int $id, $withCount = null)
     {
-        $key = $this->cacheKey . ':' . $id;
+        $key = $this->cacheKey . '-' . $id;
         $cachedData = Redis::get($key);
 
         if (!empty($cachedData)) {
             return json_decode($cachedData);
         } else {
-            $data = $this->model::find($id);
-            Redis::set($key, json_encode($data->toArray()));
-            Redis::expire($key, $this->cacheTime);
+            if ($withCount) {
+                $data = $this->model::withCount($withCount)->find($id);
+            } else {
+                $data = $this->model::find($id);
+            }
+
+            if (!empty($data->toArray())) {
+                Redis::set($key, json_encode($data->toArray()));
+                Redis::expire($key, $this->cacheTime);
+            }
 
             return $data;
         }
@@ -52,9 +65,6 @@ class ModelRepository implements ModelRepositoryInterface
     public function create(array $data)
     {
         $record = $this->model::create($data);
-
-        Redis::del($this->cacheKey);
-
         return $record;
     }
 
@@ -63,10 +73,6 @@ class ModelRepository implements ModelRepositoryInterface
         $record = $this->model::find($id);
         if ($record) {
             $record->update($data);
-
-            Redis::del($this->cacheKey);
-            Redis::del($this->cacheKey . ':' . $id);
-
             return $record;
         }
         return false;
@@ -77,12 +83,27 @@ class ModelRepository implements ModelRepositoryInterface
         $record = $this->model::find($id);
         if ($record) {
             $record->delete();
-
-            Redis::del($this->cacheKey);
-            Redis::del($this->cacheKey . ':' . $id);
-
             return true;
         }
         return false;
+    }
+
+    public function findBy()
+    {
+        $args = func_get_args();
+        $key = $this->cacheKey . '-' . implode('-', $args[0]);
+        $cachedData = Redis::get($key);
+
+        if (!empty($cachedData)) {
+            return json_decode($cachedData);
+        } else {
+            $data = call_user_func_array([$this->model, 'where'], $args)->get();
+            if (!empty($data->toArray())) {
+                Redis::set($key, json_encode($data->toArray()));
+                Redis::expire($key, $this->cacheTime);
+            }
+
+            return $data;
+        }
     }
 }
