@@ -79,7 +79,6 @@ class PostController extends Controller
             return response($validator->errors()->toJson(), 400);
         }
 
-        /** @var User $user */
         if (Auth::user()->id !== $post->user_id) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
