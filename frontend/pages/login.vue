@@ -5,12 +5,12 @@
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email:</label>
                 <input type="email" v-model="email" id="email" class="w-full p-2 border border-gray-300 rounded-md" required />
-                <p v-if="userStore.errorEmail" class="text-red-500 mt-2">{{ userStore.errorEmail }}</p>
+                <p v-if="emailError" class="text-red-500 mt-2">{{ emailError }}</p>
             </div>
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">Senha:</label>
                 <input type="password" v-model="password" id="password" class="w-full p-2 border border-gray-300 rounded-md" required />
-                <p v-if="userStore.errorPassword" class="text-red-500 mt-2">{{ userStore.errorPassword }}</p>
+                <p v-if="passwordError" class="text-red-500 mt-2">{{ passwordError }}</p>
             </div>
             <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md">Login</button>
         </form>
@@ -29,12 +29,33 @@ const email = ref('');
 const password = ref('');
 const router = useRouter();
 const userStore = useUserStore();
+const passwordError = ref(null);
+const emailError = ref(null);
 
 const handleLogin = async () => {
   await userStore.login(email.value, password.value);
+  passwordError.value = userStore.errorPassword;
+  emailError.value = userStore.errorEmail;
+
   if (userStore.token) {
+    passwordError.value = null;
+    emailError.value = null;
     router.push('/');
   }
-  
 };
+
+if (userStore.token) {
+  router.push('/');
+}
+
+useSeoMeta({
+    title: 'Login Page',
+    description: 'This is the login page',
+    keywords: 'login, page, nuxt, vue, js',
+    ogTitle: 'Login Page',
+    ogDescription: 'This is the login page',
+    twitterTitle: 'Login Page',
+    twitterDescription: 'This is the login page',
+    twitterCard: 'summary',
+});
 </script>
