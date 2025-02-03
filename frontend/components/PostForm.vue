@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div v-if="userStore.token">
         <div class="flex justify-end">
-            <button 
+            <button
             @click="showForm = !showForm" 
             :class="!showForm ? 'bg-blue-500 hover:bg-blue-700' : 'bg-red-500 hover:bg-red-700'"
             class="text-white font-bold py-2 px-2 rounded-full mb-4"
@@ -28,9 +28,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-const router = useRouter();
-
+const userStore = useUserStore();
 const postStore = usePostStore();
 const newPost = ref({ title: '', content: '' });
 const showForm = ref(false);
