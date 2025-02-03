@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from "@/stores/userStore";
 import axios from "axios";
 
 export const usePostStore = defineStore("post", {
@@ -46,19 +46,64 @@ export const usePostStore = defineStore("post", {
             this.error = null;
             const userStore = useUserStore();
             const token = userStore.token;
-            
+
             try {
-                await axios.post(
-                    `${config.public.apiBaseUrl}posts`,
-                    newPost,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
+                await axios.post(`${config.public.apiBaseUrl}posts`, newPost, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
             } catch (error) {
                 this.error = "Erro ao criar post";
+            } finally {
+                this.loading = false;
+            }
+        },
+        async likePost(id: number) {
+            const config = useRuntimeConfig();
+            this.loading = true;
+            this.error = null;
+            const userStore = useUserStore();
+            const token = userStore.token;
+
+            try {
+                await axios.post(
+                    `${config.public.apiBaseUrl}posts/${id}/likes`,
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                await this.fetchPost(id);
+                await this.fetchPosts();
+            } catch (error) {
+                this.error = "Already liked";
+            } finally {
+                this.loading = false;
+            }
+        },
+        async removeLikePost(id: number) {
+            const config = useRuntimeConfig();
+            this.loading = true;
+            this.error = null;
+            const userStore = useUserStore();
+            const token = userStore.token;
+
+            try {
+                await axios.delete(
+                    `${config.public.apiBaseUrl}posts/${id}/likes`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                await this.fetchPost(id);
+                await this.fetchPosts();
+            } catch (error) {
+                this.error = error.message.data.message;
             } finally {
                 this.loading = false;
             }
