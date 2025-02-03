@@ -53,7 +53,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors(), 400);
         }
 
         try {
@@ -71,14 +71,14 @@ class AuthController extends Controller
     {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
+                return response()->json(['message' => 'User not found'], 404);
             }
         } catch (TokenExpiredException $e) {
-            return response()->json(['token_expired'], 401);
+            return response()->json(['message' => 'Token has expired'], 401);
         } catch (TokenInvalidException $e) {
-            return response()->json(['token_invalid'], 401);
+            return response()->json(['message' => 'Token is invalid'], 401);
         } catch (JWTException $e) {
-            return response()->json(['token_absent'], 401);
+            return response()->json(['message' => 'Token is absent'], 401);
         }
 
         return response()->json($user, 200);
