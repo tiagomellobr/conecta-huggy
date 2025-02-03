@@ -38,7 +38,9 @@ class PostLikeController extends Controller
         ]);
 
         $cacheKey = strtolower(str_replace('\\', '-', Post::class));
+        $cacheKeyPost = $cacheKey . '-' . $post->id;
         Redis::del($cacheKey);
+        Redis::del($cacheKeyPost);
 
 
         return response()->json($like, 201);
@@ -47,7 +49,7 @@ class PostLikeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post, int $like)
+    public function destroy(Post $post)
     {
         $like = PostLike::where([
             'post_id' => $post->id,
@@ -61,7 +63,9 @@ class PostLikeController extends Controller
         $this->repository->delete($like->id);
 
         $cacheKey = strtolower(str_replace('\\', '-', Post::class));
+        $cacheKeyPost = $cacheKey . '-' . $post->id;
         Redis::del($cacheKey);
+        Redis::del($cacheKeyPost);
 
         return response()->json(null, 204);
     }

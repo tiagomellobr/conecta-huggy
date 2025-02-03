@@ -19,7 +19,7 @@ Route::middleware(JwtMiddleware::class)->group(function () {
 
     Route::apiResource('posts.comments', App\Http\Controllers\PostCommentController::class);
     Route::post('posts/{post}/likes', [App\Http\Controllers\PostLikeController::class, 'store']);
-    Route::delete('posts/{post}/likes/{like}', [App\Http\Controllers\PostLikeController::class, 'destroy']);
+    Route::delete('posts/{post}/likes', [App\Http\Controllers\PostLikeController::class, 'destroy']);
 
     Route::apiResource('videos', App\Http\Controllers\VideoController::class);
 
