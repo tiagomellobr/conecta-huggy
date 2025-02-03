@@ -22,12 +22,12 @@ git clone https://github.com/tiagomellobr/conecta-huggy.git
 
 3. Inicie o docker:
     ```sh
-        ./vendor/bin/sail up -d
+    ./vendor/bin/sail up -d
     ```
 
 4. Rode as migrations
     ```sh
-        ./vendor/bin/sail artisan migrate
+    ./vendor/bin/sail artisan migrate
     ```
 
 ## Frontend
