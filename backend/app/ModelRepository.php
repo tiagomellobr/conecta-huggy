@@ -24,11 +24,7 @@ class ModelRepository implements ModelRepositoryInterface
         if (!empty($cachedData)) {
             return json_decode($cachedData);
         } else {
-            if ($withCount || $with) {
-                $data = $this->model::withCount($withCount)->with($with)->orderBy('id', 'desc')->get();
-            } else {
-                $data = $this->model::orderBy('id', 'desc')->all();
-            }
+            $data = $this->model::withCount($withCount)->with($with)->orderBy('id', 'desc')->get();
 
             if (!empty($data->toArray())) {
                 Redis::set($this->cacheKey,json_encode($data->toArray()));
@@ -47,11 +43,10 @@ class ModelRepository implements ModelRepositoryInterface
         if (!empty($cachedData)) {
             return json_decode($cachedData);
         } else {
-            if ($withCount || $with) {
-                $data = $this->model::withCount($withCount)->with($with)->get();
-            } else {
-                $data = $this->model::find($id);
-            }
+            $data = $this->model::withCount($withCount)
+                ->with($with)
+                ->where('id', $id)
+                ->first();
 
             if (!empty($data->toArray())) {
                 Redis::set($key, json_encode($data->toArray()));
