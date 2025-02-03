@@ -27,7 +27,7 @@ import { usePostStore, type Post } from '@/stores/postStore';
 
 const postStore = usePostStore();
 
-const { posts: Post, loading, error, fetchPosts } = postStore;
+const { loading, error, fetchPosts } = postStore;
 
 const posts: Post[] = postStore.posts;
 
