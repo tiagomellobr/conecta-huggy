@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto max-w-3xl">
-        <header class="flex justify-between items-center py-4 mt-5">
+        <header class="flex justify-between items-center py-4 px-1 mt-5 mb-3 border-b border-gray-300">
             <div>
                 <NuxtLink to="/" class="text-xl font-semibold hover:text-gray-500">Conecta Huggy</NuxtLink>
             </div>
