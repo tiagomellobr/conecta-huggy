@@ -9,6 +9,50 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Info(
+ *     title="ConectaHuggy API",
+ *     version="1.0.0",
+ *     description="API documentation for ConectaHuggy"
+ * )
+ *
+ *  @OA\Server(
+ *     url="http://localhost/api",
+ *     description="Local Development Server"
+ * )
+ *
+ * @OA\Schema(
+ *     schema="Post",
+ *     type="object",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="title",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="content",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="user_id",
+ *         type="integer"
+ *     ),
+ *     @OA\Property(
+ *         property="created_at",
+ *         type="string",
+ *         format="date-time"
+ *     ),
+ *     @OA\Property(
+ *         property="updated_at",
+ *         type="string",
+ *         format="date-time"
+ *     )
+ * )
+ */
+
 class PostController extends Controller
 {
     protected $repository;
@@ -19,7 +63,20 @@ class PostController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/posts",
+     *     summary="Get list of posts",
+     *     tags={"Posts"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Post"))
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="No content"
+     *     )
+     * )
      */
     public function index()
     {
@@ -32,7 +89,32 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/posts",
+     *     summary="Create a new post",
+     *     tags={"Posts"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"title","content"},
+     *             @OA\Property(property="title", type="string", example="My Post Title"),
+     *             @OA\Property(property="content", type="string", example="This is the content of the post.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Post created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Post")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="The given data was invalid.")
+     *         )
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
      */
     public function store(Request $request)
     {
@@ -57,7 +139,29 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/posts/{id}",
+     *     summary="Get post by id",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of post to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Post")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     )
+     * )
      */
     public function show(Post $post)
     {
@@ -66,7 +170,49 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/posts/{id}",
+     *     summary="Update a post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of post to update",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"title","content"},
+     *             @OA\Property(property="title", type="string", example="My Post Title"),
+     *             @OA\Property(property="content", type="string", example="This is the content of the post.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Post")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="The given data was invalid.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
      */
     public function update(Request $request, Post $post)
     {
@@ -94,7 +240,33 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/posts/{id}",
+     *     summary="Delete a post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of post to delete",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Post deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     ),
+     *     security={{"bearerAuth":{}}}
+     * )
      */
     public function destroy(Post $post)
     {
