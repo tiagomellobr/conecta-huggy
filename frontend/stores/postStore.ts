@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { useRuntimeConfig } from "#app";
 import axios from "axios";
 
 export const usePostStore = defineStore("post", {

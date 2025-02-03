@@ -22,19 +22,13 @@
     </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-    setup() {
-        const postStore = usePostStore();
+<script setup lang="ts">
+import { usePostStore } from '~/stores/postStore';
 
-        return {
-            postStore
-        };
-    },
+const postStore = usePostStore();
 
-    async mounted() {
-        await this.postStore.fetchPosts();
-    },
+onMounted(async () => {
+    await postStore.fetchPosts();
 });
 
 useSeoMeta({

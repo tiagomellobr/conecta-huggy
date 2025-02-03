@@ -28,27 +28,24 @@
     </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-    setup() {
-        const postStore = usePostStore();
-        const route = useRoute();
+<script setup lang="ts">
+import { usePostStore } from '~/stores/postStore';
+import { useRoute } from 'vue-router';
 
-        return {
-            postStore,
-            route,
-        };
-    },
-    async mounted() {        
-        await this.postStore.fetchPost(this.route.params.id);
+const route = useRoute();
+const postStore = usePostStore();
 
-        useSeoMeta({
-            title: this.postStore.post.title,
-            ogTitle: this.postStore.post.title,
-            twitterTitle: this.postStore.post.title,
-            twitterCard: 'summary',
-        });
+onMounted(async () => {
+    await postStore.fetchPost(route.params.id);
 
-    },
+    const { post } = postStore;
+    
+    useSeoMeta({
+        title: post.title,
+        ogTitle: post.title,
+        twitterTitle: post.title,
+        twitterCard: 'summary',
+    });
 });
+
 </script>
