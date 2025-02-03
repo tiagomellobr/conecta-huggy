@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useUserStore } from '@/stores/userStore';
 import axios from "axios";
 
 export const usePostStore = defineStore("post", {
@@ -39,6 +40,29 @@ export const usePostStore = defineStore("post", {
                 this.loading = false;
             }
         },
+        async createPost(newPost: { title: string; content: string }) {
+            const config = useRuntimeConfig();
+            this.loading = true;
+            this.error = null;
+            const userStore = useUserStore();
+            const token = userStore.token;
+            
+            try {
+                await axios.post(
+                    `${config.public.apiBaseUrl}posts`,
+                    newPost,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+            } catch (error) {
+                this.error = "Erro ao criar post";
+            } finally {
+                this.loading = false;
+            }
+        }
     },
 });
 
