@@ -34,16 +34,21 @@ export default defineComponent({
         const postStore = usePostStore();
         const route = useRoute();
 
-        console.log();
-        
-
         return {
             postStore,
             route,
         };
     },
-    mounted() {        
-        this.postStore.fetchPost(this.route.params.id);
+    async mounted() {        
+        await this.postStore.fetchPost(this.route.params.id);
+
+        useSeoMeta({
+            title: this.postStore.post.title,
+            ogTitle: this.postStore.post.title,
+            twitterTitle: this.postStore.post.title,
+            twitterCard: 'summary',
+        });
+
     },
 });
 </script>
