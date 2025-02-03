@@ -23,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = $this->repository->all(['comments', 'likes']);
+        $posts = $this->repository->all(['comments', 'likes'], ['user']);
         if (empty($posts[0])) {
             return response()->json([], 204);
         }
@@ -61,7 +61,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post = $this->repository->find($post->id, ['comments', 'likes']);
+        $post = $this->repository->find($post->id, ['comments', 'likes'], ['user']);
         return response()->json($post);
     }
 

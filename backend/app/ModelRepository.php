@@ -17,17 +17,17 @@ class ModelRepository implements ModelRepositoryInterface
         $this->cacheKey = strtolower(str_replace('\\', '-', $model));
     }
 
-    public function all($withCount = null)
+    public function all($withCount = [], $with = [])
     {
         $cachedData = Redis::get($this->cacheKey);
 
         if (!empty($cachedData)) {
             return json_decode($cachedData);
         } else {
-            if ($withCount) {
-                $data = $this->model::withCount($withCount)->get();
+            if ($withCount || $with) {
+                $data = $this->model::withCount($withCount)->with($with)->orderBy('id', 'desc')->get();
             } else {
-                $data = $this->model::all();
+                $data = $this->model::orderBy('id', 'desc')->all();
             }
 
             if (!empty($data->toArray())) {
@@ -39,7 +39,7 @@ class ModelRepository implements ModelRepositoryInterface
 
     }
 
-    public function find(int $id, $withCount = null)
+    public function find(int $id, $withCount = [], $with = [])
     {
         $key = $this->cacheKey . '-' . $id;
         $cachedData = Redis::get($key);
@@ -47,8 +47,8 @@ class ModelRepository implements ModelRepositoryInterface
         if (!empty($cachedData)) {
             return json_decode($cachedData);
         } else {
-            if ($withCount) {
-                $data = $this->model::withCount($withCount)->find($id);
+            if ($withCount || $with) {
+                $data = $this->model::withCount($withCount)->with($with)->get();
             } else {
                 $data = $this->model::find($id);
             }
