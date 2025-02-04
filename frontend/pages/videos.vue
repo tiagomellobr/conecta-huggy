@@ -1,15 +1,15 @@
 <template>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="video in videos" :key="video.id" class="bg-white p-1 rounded-lg shadow-md">
+        <div v-for="video in videos" :key="video.id" class="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-md">
             <iframe
-            :src="video.url"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            class="w-full h-48"
+                :src="video.url"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="w-full h-48"
             ></iframe>
-            <h3 class="text-xl font-semibold my-2 p-2">{{ video.title }}</h3>
-            <p class="text-gray-700 p-2">{{ video.description }}</p>
+            <h3 class="text-xl font-semibold my-2 p-2 text-gray-900 dark:text-gray-100">{{ video.title }}</h3>
+            <p class="text-gray-700 dark:text-gray-300 p-2">{{ video.description }}</p>
         </div>
     </div>
 </template>

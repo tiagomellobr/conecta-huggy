@@ -3,12 +3,12 @@
         <h1 class="text-3xl text-center font-bold mb-6">Login</h1>
         <form @submit.prevent="handleLogin">
             <div class="mb-4">
-                <label for="email" class="block text-gray-700">Email:</label>
+                <label for="email" class="block text-gray-700 dark:text-gray-300">Email:</label>
                 <input
                     type="email"
                     v-model="email"
                     id="email"
-                    class="w-full p-2 border border-gray-300 rounded-md"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-black dark:text-white"
                     required
                 />
                 <p v-if="emailError" class="text-red-500 mt-2">
@@ -16,12 +16,12 @@
                 </p>
             </div>
             <div class="mb-4">
-                <label for="password" class="block text-gray-700">Senha:</label>
+                <label for="password" class="block text-gray-700 dark:text-gray-300">Senha:</label>
                 <input
                     type="password"
                     v-model="password"
                     id="password"
-                    class="w-full p-2 border border-gray-300 rounded-md"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-black dark:text-white"
                     required
                 />
                 <p v-if="passwordError" class="text-red-500 mt-2">
@@ -30,14 +30,14 @@
             </div>
             <button
                 type="submit"
-                class="w-full bg-blue-500 text-white p-2 rounded-md"
+                class="w-full bg-blue-500 dark:bg-blue-700 text-white p-2 rounded-md"
             >
                 Login
             </button>
         </form>
-        <p class="mt-4 text-center">
+        <p class="mt-4 text-center text-gray-700 dark:text-gray-300">
             Não tem uma conta?
-            <NuxtLink to="/register" class="text-blue-500"
+            <NuxtLink to="/register" class="text-blue-500 dark:text-blue-300"
                 >Registre-se</NuxtLink
             >
         </p>

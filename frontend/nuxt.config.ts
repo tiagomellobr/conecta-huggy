@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     modules: [
         "@nuxtjs/tailwindcss",
+        "@nuxtjs/color-mode",
         "@pinia/nuxt",
         "pinia-plugin-persistedstate/nuxt",
         "nuxt-gtag",
@@ -18,4 +19,7 @@ export default defineNuxtConfig({
         enabled: process.env.NODE_ENV === "production",
         id: process.env.GOOGLE_ANALYTICS_ID,
     },
+    colorMode: {
+        classSuffix: "",
+    }
 });

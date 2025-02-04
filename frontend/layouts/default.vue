@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
         <div class="container mx-auto max-w-3xl flex-grow">
-            <header class="flex justify-between items-center py-4 px-1 mt-5 mb-3 border-b border-gray-300">
+            <header class="flex justify-between items-center py-4 px-1 mt-5 mb-3 border-b border-gray-300 dark:border-gray-700">
                 <div>
-                    <NuxtLink to="/" class="text-xl font-semibold hover:text-gray-500">Conecta Huggy</NuxtLink>
+                    <NuxtLink to="/" class="text-xl font-semibold hover:text-gray-500 dark:hover:text-gray-300">Conecta Huggy</NuxtLink>
                 </div>
                 <Menu />
             </header>
@@ -29,6 +29,11 @@
         huggyScript = "var $_Huggy = { defaultCountry: '+55', uuid: '5741a2cd-8d98-4fb6-b598-767d8c7c13d1' , company: '359123' }; (function(i,s,o,g,r,a,m){ i[r]={context:{id:'3c2b78346489fcd071c5fb12bf393aab'}};a=o;o=s.createElement(o); o.async=1;o.src=g;m=s.getElementsByTagName(a)[0];m.parentNode.insertBefore(o,m); })(window,document,'script','https://js.huggy.chat/widget.min.js','pwz');";
     }
     useHead({
+        colorMode: true,
+        colorModeConfig: {
+            storageKey: 'theme',
+            initialColorMode: 'system',
+        },
         titleTemplate: '%s - Conecta Huggy',
         meta: [
             {

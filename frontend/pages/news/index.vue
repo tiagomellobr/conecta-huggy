@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-            <div v-for="news in newsList" :key="news.id" class="bg-white p-4 rounded-lg shadow-md">
+            <div v-for="news in newsList" :key="news.id" class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
                 <NuxtLink :to="`/news/${news.id}`">
-                    <h3 class="text-xl font-semibold mb-2">{{ news.title }}</h3>
-                    <p class="text-gray-700 mb-4">{{ news.content }}</p>
+                    <h3 class="text-xl font-semibold mb-2 dark:text-white">{{ news.title }}</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ news.content }}</p>
                 </NuxtLink>
             </div>
         </div>
