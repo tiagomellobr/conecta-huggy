@@ -22,6 +22,12 @@
 </style>
 
 <script setup>
+    const config = useRuntimeConfig();
+    let huggyScript = '';
+
+    if (config.public.env === 'production') {
+        huggyScript = "var $_Huggy = { defaultCountry: '+55', uuid: '5741a2cd-8d98-4fb6-b598-767d8c7c13d1' , company: '359123' }; (function(i,s,o,g,r,a,m){ i[r]={context:{id:'3c2b78346489fcd071c5fb12bf393aab'}};a=o;o=s.createElement(o); o.async=1;o.src=g;m=s.getElementsByTagName(a)[0];m.parentNode.insertBefore(o,m); })(window,document,'script','https://js.huggy.chat/widget.min.js','pwz');";
+    }
     useHead({
         titleTemplate: '%s - Conecta Huggy',
         meta: [
@@ -49,7 +55,7 @@
         ],
         script: [
             {
-                children: "var $_Huggy = { defaultCountry: '+55', uuid: '5741a2cd-8d98-4fb6-b598-767d8c7c13d1' , company: '359123' }; (function(i,s,o,g,r,a,m){ i[r]={context:{id:'3c2b78346489fcd071c5fb12bf393aab'}};a=o;o=s.createElement(o); o.async=1;o.src=g;m=s.getElementsByTagName(a)[0];m.parentNode.insertBefore(o,m); })(window,document,'script','https://js.huggy.chat/widget.min.js','pwz');"
+                children: huggyScript,
             }
         ]
     });
